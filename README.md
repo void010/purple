@@ -1,1 +1,1 @@
-Zip file Passwd = test@123
+mimikatz zip file Passwd = test@123
