@@ -1,1 +1,1 @@
-This is Poc for DLL side loading where the vulnerable exe is GUP.exe, a update utility of Notepad++ 
+This is Poc for DLL side loading where the vulnerable exe is C:\Program Files\notepad++\updater\GUP.exe, a update utility of Notepad++ 
