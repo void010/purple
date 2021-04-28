@@ -1,0 +1,90 @@
+
+import os
+from pathlib import Path
+import extract_msg
+import win32com
+import win32com.client
+import sys
+counteremail=0
+f = open("testfile.txt","w+")
+ 
+for path in Path(r'C:\Users\deepak.keshav\Desktop').rglob('*.msg'):
+    #print(path)
+    msg = extract_msg.Message(path)
+    coubteremail=counteremail+1
+    # print(msg.sender)
+    # print(msg.to)
+    sender=msg.sender
+    print(sender.split("<")[1].split(">")[0],file=f)
+    to=msg.to
+    tos=to.split(",")
+    for i in tos:
+        print(i.split("<")[1].split(">")[0],file=f)
+    if(counteremail>=5):
+        break
+      
+
+
+
+
+ 
+outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+accounts= win32com.client.Dispatch("Outlook.Application").Session.Accounts
+ 
+def emailleri_al(folder):
+    counter=0
+    messages = folder.Items
+    a=len(messages)
+    if a>0:
+        for message2 in messages:
+             try:
+                sender = message2.SenderEmailAddress
+                counter=counter+1
+                if sender != "":
+                    print(sender.split("-")[1])
+                    print(sender.split("-")[1], file=f)
+             except:
+                #print("Error")
+                print(account.DeliveryStore.DisplayName)
+                pass
+ 
+             try:
+                message2.Save
+                message2.Close(0)
+             except:
+                 pass
+             if(counter>=5):
+                break
+ 
+counteremail=0
+for account in accounts:
+    global inbox
+    inbox = outlook.Folders(account.DeliveryStore.DisplayName)
+    print("****Account Name**********************************",file=f)
+    print(account.DisplayName,file=f)
+    print(account.DisplayName)
+    print("***************************************************",file=f)
+    folders = inbox.Folders
+ 
+    for folder in folders:
+        print("****Folder Name**********************************", file=f)
+        print(folder, file=f)
+        print("*************************************************", file=f)
+        emailleri_al(folder)
+        a = len(folder.folders)
+ 
+        if a>0 :
+            global z
+            z = outlook.Folders(account.DeliveryStore.DisplayName).Folders(folder.name)
+            x = z.Folders
+            for y in x:
+                counteremail=counteremail+1
+                emailleri_al(y)
+                print("****Folder Name**********************************", file=f)
+                print("..."+y.name,file=f)
+                print("*************************************************", file=f)
+                if(counteremail>=5):
+                    print("over")
+                    break
+ 
+print("Finished Succesfully")
